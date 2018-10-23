@@ -1,0 +1,23 @@
+{
+  "name": "wyshes",
+  "version": "1.0.0",
+  "description": "Microservice to manage wyshes for gyft-ninja.",
+  "main": "handler.js",
+  "author": "Flint Ory",
+  "license": "MIT",
+  "scripts": {
+    "lint": "semistandard",
+    "pretest": "npm run",
+    "test": "mocha test/*.test.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.339.0",
+    "body-parser": "^1.18.3",
+    "serverless": "^1.32.0"
+  },
+  "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.35",
+    "serverless-http": "^1.7.0",
+    "serverless-offline": "^3.28.0"
+  }
+}

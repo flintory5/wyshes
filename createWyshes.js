@@ -7,7 +7,7 @@ const IS_OFFLINE = process.env.IS_OFFLINE;
 const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}';
 
 module.exports.handler = async (event, context) => {
-  console.log("Request received " + JSON.stringify(event));
+  console.log("Request received " + JSON.stringify(event.body));
 
   let dynamoDb;
   let fh = new AWS.Firehose();
@@ -15,15 +15,15 @@ module.exports.handler = async (event, context) => {
   let _parsed;
 
   try {
-    _parsed = JSON.parse(JSON.stringify(event));
+    _parsed = JSON.parse(event.body);
   } catch (err) {
     console.error(`Could not parse requested JSON ${JSON.stringify(event.body)}: ${err.stack}`);
     response = {
       statusCode: 500,
-      headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+      headers: HEADERS,
       error: `Could not parse requested JSON: ${err.stack}`
     };
-    callback(err, response);
+    return response;
   }
   const { name, description, url, price } = _parsed;
 

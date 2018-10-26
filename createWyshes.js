@@ -30,6 +30,7 @@ module.exports.handler = async (event, context) => {
   let params = {
     TableName: WYSHES_TABLE,
     Item: {
+      "wyshId": Date.now().toString(),
       "name": name,
       "description": description,
       "url": url,
@@ -49,23 +50,22 @@ module.exports.handler = async (event, context) => {
 
   console.log("Item:\n", params.Item);
 
-  dynamoDb.put(params, function(err, data) {
-    if (err) {
+  try {
+    const resp = await dynamoDb.put(params).promise();
+    console.log(resp);
+    console.log(`Successfully created wysh: ${params.Item.name}`);
+    return {
+      statusCode: 200,
+      headers: HEADERS,
+      body: JSON.stringify(params.Item)
+    }
+  }
+  catch (err) {
       console.log(`createWyshes ERROR=${err.stack}`);
-      response = {
+      return {
         statusCode: 400,
         headers: HEADERS,
         error: `Could not create wysh: ${err.stack}`
       }
-    } else {
-      console.log(`Successfully created wysh: ${params.Item.name}`);
-      response = {
-        statusCode: 200,
-        headers: HEADERS,
-        body: JSON.stringify(params.Item)
-      }
-    }
-  });
-
-  return response;
+  }
 };

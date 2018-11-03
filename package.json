@@ -6,9 +6,9 @@
   "author": "Flint Ory",
   "license": "MIT",
   "scripts": {
-    "lint": "semistandard",
-    "pretest": "npm run",
-    "test": "mocha test/*.test.js"
+    "test": "jest __tests__/unit/*",
+    "lint": "eslint */*.js",
+    "integration": "jest __tests__/integration/*"
   },
   "dependencies": {
     "aws-sdk": "^2.339.0",
@@ -16,9 +16,13 @@
     "serverless": "^1.32.0"
   },
   "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^21.27.0",
     "jest": "^23.6.0",
     "serverless-dynamodb-local": "^0.2.35",
     "serverless-http": "^1.7.0",
-    "serverless-offline": "^3.28.0"
+    "serverless-offline": "^3.28.0",
+    "supertest": "^3.3.0"
   }
 }

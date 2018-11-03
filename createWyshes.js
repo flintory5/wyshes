@@ -7,7 +7,8 @@ const IS_OFFLINE = process.env.IS_OFFLINE;
 const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}';
 
 module.exports.handler = async (event, context) => {
-  console.log("Request received " + JSON.stringify(event));
+  console.log("Request received " + JSON.stringify(event.body));
+  console.log("IS_OFFLINE = " + IS_OFFLINE);
 
   let dynamoDb;
   let fh = new AWS.Firehose();
@@ -15,21 +16,22 @@ module.exports.handler = async (event, context) => {
   let _parsed;
 
   try {
-    _parsed = JSON.parse(JSON.stringify(event));
+    _parsed = JSON.parse(event.body);
   } catch (err) {
     console.error(`Could not parse requested JSON ${JSON.stringify(event.body)}: ${err.stack}`);
     response = {
       statusCode: 500,
-      headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+      headers: HEADERS,
       error: `Could not parse requested JSON: ${err.stack}`
     };
-    callback(err, response);
+    return response;
   }
   const { name, description, url, price } = _parsed;
 
   let params = {
     TableName: WYSHES_TABLE,
     Item: {
+      "wyshId": Date.now().toString(),
       "name": name,
       "description": description,
       "url": url,
@@ -42,6 +44,7 @@ module.exports.handler = async (event, context) => {
       region: 'localhost',
       endpoint: 'http://localhost:8000'
     })
+    params.TableName = 'gyft-wyshes-table-dev';
     console.log(dynamoDb);
   } else {
     dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -49,23 +52,22 @@ module.exports.handler = async (event, context) => {
 
   console.log("Item:\n", params.Item);
 
-  dynamoDb.put(params, function(err, data) {
-    if (err) {
+  try {
+    const resp = await dynamoDb.put(params).promise();
+    console.log(resp);
+    console.log(`Successfully created wysh: ${params.Item.name}`);
+    return {
+      statusCode: 200,
+      headers: HEADERS,
+      body: JSON.stringify(params.Item)
+    }
+  }
+  catch (err) {
       console.log(`createWyshes ERROR=${err.stack}`);
-      response = {
+      return {
         statusCode: 400,
         headers: HEADERS,
         error: `Could not create wysh: ${err.stack}`
       }
-    } else {
-      console.log(`Successfully created wysh: ${params.Item.name}`);
-      response = {
-        statusCode: 200,
-        headers: HEADERS,
-        body: JSON.stringify(params.Item)
-      }
-    }
-  });
-
-  return response;
+  }
 };

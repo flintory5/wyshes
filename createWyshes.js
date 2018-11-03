@@ -8,6 +8,7 @@ const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-A
 
 module.exports.handler = async (event, context) => {
   console.log("Request received " + JSON.stringify(event.body));
+  console.log("IS_OFFLINE = " + IS_OFFLINE);
 
   let dynamoDb;
   let fh = new AWS.Firehose();
@@ -43,6 +44,7 @@ module.exports.handler = async (event, context) => {
       region: 'localhost',
       endpoint: 'http://localhost:8000'
     })
+    params.TableName = 'gyft-wyshes-table-dev';
     console.log(dynamoDb);
   } else {
     dynamoDb = new AWS.DynamoDB.DocumentClient();

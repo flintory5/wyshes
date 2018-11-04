@@ -10,5 +10,4 @@ phases:
       - yarn install
   build:
     commands:
-      - yarn run-script lint
       - yarn test

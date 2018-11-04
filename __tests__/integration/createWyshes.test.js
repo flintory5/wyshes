@@ -1,4 +1,4 @@
-const createWyshes = require('../createWyshes');
+const createWyshes = require('../../createWyshes');
 
 const id = Date.now().toString();
 const context = {};

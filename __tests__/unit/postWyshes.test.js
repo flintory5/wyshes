@@ -50,5 +50,14 @@ describe('createWysh', () => {
         });
     });
 
-    
+    it('Recieves an empty object in the response body', () => {
+        wysh.saveWysh(body, (err, res) => {
+            const parseBody = JSON.parse(res.body);
+            expect(parseInt(parseBody.wyshId)).toBeGreaterThan(0);
+            expect(parseBody.name).toEqual('ge smart light switch');
+            expect(parseBody.description).toEqual('light switches for the basement');
+            expect(parseBody.url).toEqual('www.ge.com/smart-switches');
+            expect(parseBody.price).toEqual(130);
+        });
+    });
 });

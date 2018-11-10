@@ -2,6 +2,7 @@
 
 const AWS = require('aws-sdk');
 const Wyshes = require('../wyshes/Wyshes');
+const WyshDb = require('../wyshes/wyshDatabase');
 const WYSHES_TABLE = process.env.WYSHES_TABLE;
 const AWS_DEPLOY_REGION = process.env.AWS_DEPLOY_REGION;
 const IS_OFFLINE = process.env.IS_OFFLINE;
@@ -25,7 +26,8 @@ module.exports.handler = async (event, context) => {
   }
   const { name, description, url, price } = _parsed;
 
-  let wysh = new Wyshes(null, 'dev', true);
+  const wyshDb = new WyshDb('dev', true);
+  let wysh = new Wyshes(wyshDb);
 
   try {
     return wysh.saveWysh(name, description, url, price);

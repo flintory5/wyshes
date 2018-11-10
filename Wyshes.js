@@ -3,10 +3,8 @@ const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-A
 
 class Wyshes {
 
-    constructor(db, stage, offline) {
-        if (db == null) {
-            this.wyshDb = new wyshDatabase(stage, offline);
-        }
+    constructor(db) {
+        this.wyshDb = db;
     }
 
     async saveWysh(name, description, url, price) {

@@ -33,7 +33,7 @@ class Wyshes {
 
             console.log(JSON.stringify(wysh));
             console.log(`Successfully created wysh: ${params.Item.name}`);
-            response = {
+            const response = {
                 statusCode: 200,
                 headers: HEADERS,
                 body: JSON.stringify(params.Item)

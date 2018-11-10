@@ -7,37 +7,40 @@ class Wyshes {
         this.wyshDb = db;
     }
 
-    async saveWysh(name, description, url, price) {
+    saveWysh(body, callback) {
         let params = {
             TableName: this.wyshDb.tableName,
             Item: {
               "wyshId": Date.now().toString(),
-              "name": name,
-              "description": description,
-              "url": url,
-              "price": price
+              "name": body.name,
+              "description": body.description,
+              "url": body.url,
+              "price": body.price
             }
         }
+        console.log("Body:\n", body);
         console.log("Item:\n", params.Item);        
         
-        try {
-            const resp = await this.wyshDb.db.put(params).promise();
-            console.log(resp);
-            console.log(`Successfully created wysh: ${params.Item.name}`);
-            return {
-              statusCode: 200,
-              headers: HEADERS,
-              body: JSON.stringify(params.Item)
+        const resp = this.wyshDb.db.put(params, (err, wysh) => {
+            if (err) {
+                console.log(`createWyshes ERROR=${err.stack}`);
+                return {
+                    statusCode: 400,
+                    headers: HEADERS,
+                   error: `Could not create wysh: ${err.stack}`
+                }
             }
-          }
-          catch (err) {
-              console.log(`createWyshes ERROR=${err.stack}`);
-              return {
-                statusCode: 400,
+
+            console.log(JSON.stringify(wysh));
+            console.log(`Successfully created wysh: ${params.Item.name}`);
+            response = {
+                statusCode: 200,
                 headers: HEADERS,
-                error: `Could not create wysh: ${err.stack}`
-              }
-          }
+                body: JSON.stringify(params.Item)
+            };
+
+            callback(null, response);
+        });
     }
 
 }

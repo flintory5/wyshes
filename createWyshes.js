@@ -8,7 +8,7 @@ const AWS_DEPLOY_REGION = process.env.AWS_DEPLOY_REGION;
 const IS_OFFLINE = process.env.IS_OFFLINE;
 const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}';
 
-module.exports.handler = async (event, context) => {
+module.exports.handler = (event, context, callback) => {
   console.log("Request received " + JSON.stringify(event.body));
 
   let fh = new AWS.Firehose();
@@ -24,13 +24,13 @@ module.exports.handler = async (event, context) => {
       error: `Could not parse requested JSON: ${err.stack}`
     };
   }
-  const { name, description, url, price } = _parsed;
+  // const { name, description, url, price } = _parsed;
 
   const wyshDb = new WyshDb('dev', true);
   let wysh = new Wyshes(wyshDb);
 
   try {
-    return wysh.saveWysh(name, description, url, price);
+    return wysh.saveWysh(_parsed, callback);
   } catch (err) {
     console.error(`Could not create Wysh ${name}: ${err.stack}`);
     return {

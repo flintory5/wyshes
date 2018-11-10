@@ -29,7 +29,7 @@ describe('createWysh', () => {
     }
 
     it('Calls the post method once', () => {
-        wysh.saveWysh(name, description, url, price);
+        wysh.saveWysh(body, () => {});
         expect(dbMock.db.put.mock.calls).toHaveLength(1);
     });
 });

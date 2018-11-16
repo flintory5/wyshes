@@ -1,5 +1,8 @@
 const createWyshes = require('../../createWyshes');
 
+const url = 'http://localhost:3000';
+const req = require('supertest')(url);
+
 const id = Date.now().toString();
 const context = {};
 
@@ -8,10 +11,6 @@ const body = {
     "description": "light switches for the basement",
     "url": "www.ge.com/smart-switches",
     "price": 130
-}
-
-const req = {
-    "body": JSON.stringify(body)
 }
 
 const res = {
@@ -25,6 +24,16 @@ const res = {
     }
 }
 
-test('correct wysh is created', () => {
-    expect(createWyshes.handler(req, context)).toBe(res);
+describe('createWyshes', () => {
+    it('correct wysh is created', () => {
+        return req
+            .post('/wyshes')
+            .set('Content-Type', 'application/json')
+            .set('Access-Control-Allow-Origin', '*')
+            .send(body)
+            .expect(200)
+            .then((res) => {
+                expect(res).toBeDefined();
+            });
+    });
 });

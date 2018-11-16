@@ -18,29 +18,29 @@ class Wyshes {
               "price": body.price
             }
         }
-        console.log("Body:\n", body);
-        console.log("Item:\n", params.Item);        
+        // console.log("Body:\n", body);
+        // console.log("Item:\n", params.Item);        
         
-        const resp = this.wyshDb.db.put(params, (err, wysh) => {
+        let resp;
+        this.wyshDb.db.put(params, (err, wysh) => {
             if (err) {
                 console.log(`createWyshes ERROR=${err.stack}`);
-                return {
+                resp = {
                     statusCode: 400,
                     headers: HEADERS,
                    error: `Could not create wysh: ${err.stack}`
                 }
             }
 
-            console.log(JSON.stringify(wysh));
+            // console.log(JSON.stringify(wysh));
             console.log(`Successfully created wysh: ${params.Item.name}`);
-            const response = {
+            resp = {
                 statusCode: 200,
                 headers: HEADERS,
                 body: JSON.stringify(params.Item)
             };
-
-            callback(null, response);
         });
+        callback(null, resp);
     }
 
 }

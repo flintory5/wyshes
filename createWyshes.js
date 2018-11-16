@@ -13,6 +13,7 @@ module.exports.handler = (event, context, callback) => {
 
   let fh = new AWS.Firehose();
   let _parsed;
+  let response;
 
   try {
     _parsed = JSON.parse(event.body);
@@ -24,19 +25,18 @@ module.exports.handler = (event, context, callback) => {
       error: `Could not parse requested JSON: ${err.stack}`
     };
   }
-  // const { name, description, url, price } = _parsed;
 
-  const wyshDb = new WyshDb('dev', true);
+  const wyshDb = new WyshDb('dev', IS_OFFLINE);
   let wysh = new Wyshes(wyshDb);
 
   try {
-    return wysh.saveWysh(_parsed, callback);
+    wysh.saveWysh(_parsed, callback);
   } catch (err) {
-    console.error(`Could not create Wysh ${name}: ${err.stack}`);
-    return {
-      statusCode: 500,
-      headers: HEADERS,
-      error: `Could not create Wysh: ${err.stack}`
-    };   
+     console.error(`Could not create Wysh ${name}: ${err.stack}`);
+    // response = {
+    //   statusCode: 500,
+    //   headers: HEADERS,
+    //   error: `Could not create Wysh: ${err.stack}`
+    // };   
   }
 };

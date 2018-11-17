@@ -4,7 +4,6 @@ app: gyft-ninja
 tenant: flintory5
 
 plugins:
-  - serverless-stack-output # store stack output in a file
   - serverless-dynamodb-local # use this with serverless-offline to create local dev environment
   - serverless-offline
 

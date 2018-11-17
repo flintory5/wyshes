@@ -19,6 +19,7 @@
     "serverless-dynamodb-local": "^0.2.35",
     "serverless-http": "^1.7.0",
     "serverless-offline": "^3.28.0",
+    "serverless-stack-output": "^0.2.3",
     "supertest": "^3.3.0"
   }
 }

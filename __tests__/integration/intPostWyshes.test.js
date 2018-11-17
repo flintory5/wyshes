@@ -1,6 +1,7 @@
 const createWyshes = require('../../createWyshes');
+const stackOutput = require('../../.build/stack.json');
 
-const url = 'http://localhost:3000';
+const url = stackOutput.ServiceEndpoint;
 const req = require('supertest')(url);
 
 const id = Date.now().toString();

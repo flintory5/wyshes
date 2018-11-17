@@ -12,7 +12,14 @@ phases:
       - serverless dynamodb install
       - serverless offline start &
       - sleep 10s
-  build:
+  local-test:
     commands:
       - yarn test
       - yarn integration
+  integration-test:
+    commands:
+      - serverless deploy --stage test -v
+      - yarn integration
+  post-test:
+    commands:
+      - serverless remove --stage test -v

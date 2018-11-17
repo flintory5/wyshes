@@ -3,12 +3,12 @@ version: 0.2
 phases:
   install:
     commands:
+      - rm package-lock.json
       - sudo apt-get update -y && sudo apt-get install -y make apt-transport-https
       - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
       - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
       - sudo apt-get update && sudo apt-get install yarn
       - yarn install
-      - npm install -g serverless
       - serverless dynamodb install
       - serverless offline start &
       - sleep 10s

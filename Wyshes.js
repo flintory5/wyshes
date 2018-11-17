@@ -1,4 +1,5 @@
-const wyshDatabase = require('../wyshes/wyshDatabase');
+var path = require('path');
+const wyshDatabase = require( path.resolve( __dirname, 'wyshDatabase'));
 const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}';
 
 class Wyshes {

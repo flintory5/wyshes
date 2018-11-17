@@ -1,8 +1,9 @@
 'use strict';
 
+var path = require('path');
 const AWS = require('aws-sdk');
-const Wyshes = require('../wyshes/Wyshes');
-const WyshDb = require('../wyshes/wyshDatabase');
+const Wyshes = require( path.resolve( __dirname, 'Wyshes'));
+const WyshDb = require( path.resolve( __dirname, 'wyshDatabase'));
 const WYSHES_TABLE = process.env.WYSHES_TABLE;
 const AWS_DEPLOY_REGION = process.env.AWS_DEPLOY_REGION;
 const IS_OFFLINE = process.env.IS_OFFLINE;

@@ -14,6 +14,6 @@ describe('wyshDatabase', () => {
     it('Creates an online database', () => {
         const wyshDb = new wyshDatabase('dev', false);
 
-        expect(wyshDb.db.service.config.endpoint).toEqual('dynamodb.undefined.amazonaws.com');
+        expect(wyshDb.db.service.config.endpoint).toMatch(/amazonaws.com/);
     });
 });

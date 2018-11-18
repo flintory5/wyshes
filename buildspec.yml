@@ -14,6 +14,20 @@ phases:
       - yarn test
       - serverless deploy --stage test -v
       - yarn integration
+      # create directory for deployment packages
+      - mkdir artifacts
+      # create staging deployment package
+      - mkdir artifacts/stg
+      - serverless package --package artifacts/stg --stage stg -v
+      # create prod deployment package
+      - mkdir artifacts/prod
+      - serverless package --package artifacts/prod --stage prod -v
   post_build:
     commands:
       - serverless remove --stage test -v
+artifacts:
+  files:
+    # export artifacts needed for staging and prod deployments to an S3 bucket
+    - artifacts/**/*
+    - serverless.yml
+    - deploy.sh

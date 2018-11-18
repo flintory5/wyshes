@@ -9,13 +9,9 @@ phases:
       - apt-get update && apt-get install yarn
       - npm install -g serverless
       - yarn install
-      - serverless dynamodb install
-      - serverless offline start &
-      - sleep 10s
   build:
     commands:
       - yarn test
-      - yarn integration
       - serverless deploy --stage test -v
       - yarn integration
   post_build:

@@ -2,6 +2,9 @@ const createWyshes = require('../../createWyshes');
 const stackOutput = require('../../.build/stack.json');
 
 const url = stackOutput.ServiceEndpoint;
+
+console.log('Integration URL: ' + url);
+
 const req = require('supertest')(url);
 
 const id = Date.now().toString();

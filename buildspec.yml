@@ -18,6 +18,6 @@ phases:
       - yarn integration
       - serverless deploy --stage test -v
       - yarn integration
-  post-build:
+  post_build:
     commands:
       - serverless remove --stage test -v

@@ -3,6 +3,7 @@ const stackOutput = require('../../.build/stack.json');
 
 const url = stackOutput.ServiceEndpoint;
 
+console.log('Stack Output: ' + JSON.stringify(stackOutput));
 console.log('Integration URL: ' + url);
 
 const req = require('supertest')(url);

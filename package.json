@@ -11,8 +11,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.339.0",
-    "body-parser": "^1.18.3",
-    "serverless": "^1.32.0"
+    "body-parser": "^1.18.3"
   },
   "devDependencies": {
     "jest": "^23.6.0",

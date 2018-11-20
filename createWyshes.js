@@ -7,7 +7,8 @@ const WyshDb = require( path.resolve( __dirname, 'wyshDatabase'));
 const WYSHES_TABLE = process.env.WYSHES_TABLE;
 const AWS_DEPLOY_REGION = process.env.AWS_DEPLOY_REGION;
 const IS_OFFLINE = process.env.IS_OFFLINE;
-const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}';
+const STAGE = process.env.STAGE;
+const HEADERS = '"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"';
 
 module.exports.handler = (event, context, callback) => {
   console.log("Request received " + JSON.stringify(event.body));
@@ -22,12 +23,12 @@ module.exports.handler = (event, context, callback) => {
     console.error(`Could not parse requested JSON ${JSON.stringify(event.body)}: ${err.stack}`);
     return {
       statusCode: 500,
-      headers: HEADERS,
+      headers: {HEADERS},
       error: `Could not parse requested JSON: ${err.stack}`
     };
   }
 
-  const wyshDb = new WyshDb('dev', IS_OFFLINE);
+  const wyshDb = new WyshDb(STAGE, IS_OFFLINE);
   let wysh = new Wyshes(wyshDb);
 
   try {

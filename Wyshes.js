@@ -1,6 +1,6 @@
 var path = require('path');
 const wyshDatabase = require( path.resolve( __dirname, 'wyshDatabase'));
-const HEADERS = 'headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}';
+const HEADERS = '"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"';
 
 class Wyshes {
 
@@ -9,6 +9,7 @@ class Wyshes {
     }
 
     saveWysh(body, callback) {
+        let resp;
         let params = {
             TableName: this.wyshDb.tableName,
             Item: {
@@ -19,10 +20,7 @@ class Wyshes {
               "price": body.price
             }
         }
-        // console.log("Body:\n", body);
-        // console.log("Item:\n", params.Item);        
-        
-        let resp;
+
         this.wyshDb.db.put(params, (err, wysh) => {
             if (err) {
                 console.log(`createWyshes ERROR=${err.stack}`);
@@ -33,15 +31,14 @@ class Wyshes {
                 }
             }
 
-            // console.log(JSON.stringify(wysh));
             console.log(`Successfully created wysh: ${params.Item.name}`);
             resp = {
                 statusCode: 200,
-                headers: HEADERS,
+                headers: {HEADERS},
                 body: JSON.stringify(params.Item)
             };
+            callback(null, resp);
         });
-        callback(null, resp);
     }
 
 }

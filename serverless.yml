@@ -20,11 +20,12 @@ custom:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: dev
+  stage: ${opt:stage}
   region: us-east-1
   environment:
     WYSHES_TABLE: ${self:custom.tableName}
     AWS_DEPLOY_REGION: ${self:provider.region}
+    STAGE: ${opt:stage}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -37,7 +38,7 @@ provider:
       Resource:
         - { "Fn::GetAtt": ["GyftWyshesDynamoDBTable", "Arn" ] }
         - { "Fn::Join": [ "/", [ 
-           { "Fn::GetAtt": ["GyftWyshesDynamoDBTable", "Arn" ] }, "index"
+           { "Fn::GetAtt": ["GyftWyshesDynamoDBTable", "Arn" ] }, "index", "name"
           ]]}  
 
 
